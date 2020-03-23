@@ -27,7 +27,7 @@ export default class Loading {
   }
  
 
-  update() {
+  update(store) {
     console.log('observer', store)
     this.render();
   }

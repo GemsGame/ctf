@@ -2,6 +2,7 @@ import Store from "../store";
 const store = new Store();
 store.subscribe(store.login);
 store.subscribe(store.loading);
+store.subscribe(store.battle);
 
 export default function listener() {
 
