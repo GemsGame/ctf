@@ -14,6 +14,7 @@ export default function listener() {
 
             setTimeout(() => {
                 store.loading.loadingStatus = false;
+                store.battle.status = true;
                 store.notify();  
             }, 3000); 
         }
