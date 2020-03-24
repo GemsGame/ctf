@@ -39,7 +39,7 @@ export default class Login {
         this._status = value;
     }
 
-    update() {
+    update(store) {
     console.log('observer', store)
     this.render();
     }
