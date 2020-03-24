@@ -868,6 +868,30 @@ eval("var api = __webpack_require__(/*! ../node_modules/style-loader/dist/runtim
 
 /***/ }),
 
+/***/ "./src/components/application/index.js":
+/*!*********************************************!*\
+  !*** ./src/components/application/index.js ***!
+  \*********************************************/
+/*! exports provided: App */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"App\", function() { return App; });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n //there will be only 1 instance of App\n\nlet App = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Application\"]({\n  resizeTo: window,\n  backgroundColor: 0x44d8f5\n});\n\n//# sourceURL=webpack:///./src/components/application/index.js?");
+
+/***/ }),
+
+/***/ "./src/components/battle/index.js":
+/*!****************************************!*\
+  !*** ./src/components/battle/index.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Battle; });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n/* harmony import */ var _application__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../application */ \"./src/components/application/index.js\");\n\n\nclass Battle {\n  constructor() {\n    this._status = false;\n    this.sprites = {};\n  }\n\n  render() {\n    if (this._status === true) {\n      document.querySelector(\"#app\").appendChild(_application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].view);\n      this.sprites.characters_0001.anchor.set(0.5);\n      this.sprites.characters_0001.scale.set(0.5);\n      this.sprites.characters_0001.x = _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].screen.width / 2;\n      this.sprites.characters_0001.y = _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].screen.height / 2;\n      _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].stage.addChild(this.sprites.characters_0001);\n\n      window.onresize = e => {\n        this.sprites.characters_0001.x = _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].screen.width / 2;\n        this.sprites.characters_0001.y = _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].screen.height / 2;\n      };\n    }\n  }\n\n  update(state) {\n    this.sprites = state.preload.sprites;\n    this.render();\n  }\n\n  set status(value) {\n    this._status = value;\n  }\n\n}\n\n//# sourceURL=webpack:///./src/components/battle/index.js?");
+
+/***/ }),
+
 /***/ "./src/components/loading/index.js":
 /*!*****************************************!*\
   !*** ./src/components/loading/index.js ***!
@@ -891,6 +915,18 @@ eval("var api = __webpack_require__(/*! ../../../node_modules/style-loader/dist/
 
 /***/ }),
 
+/***/ "./src/components/preload/index.js":
+/*!*****************************************!*\
+  !*** ./src/components/preload/index.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Preload; });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n/* harmony import */ var _application__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../application */ \"./src/components/application/index.js\");\n\n\nclass Preload {\n  constructor() {\n    this.sprites = {};\n  }\n\n  preload() {\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0001', '../assets/characters/characters_0001.png', {\n      crossOrigin: ''\n    });\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0002', '../assets/characters/characters_0002.png', {\n      crossOrigin: ''\n    });\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0003', '../assets/characters/characters_0003.png', {\n      crossOrigin: ''\n    });\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0004', '../assets/characters/characters_0004.png', {\n      crossOrigin: ''\n    });\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0005', '../assets/characters/characters_0005.png', {\n      crossOrigin: ''\n    });\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0006', '../assets/characters/characters_0006.png', {\n      crossOrigin: ''\n    });\n    _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.add('characters_0007', '../assets/characters/characters_0007.png', {\n      crossOrigin: ''\n    });\n    return new Promise((resolve, reject) => {\n      let errors = [];\n      _application__WEBPACK_IMPORTED_MODULE_1__[\"App\"].loader.load((loader, resources) => {\n        Object.keys(resources).map((item, i) => {\n          this.sprites[resources[item].name] = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"TilingSprite\"](resources[item].texture, 256, 256);\n\n          if (resources[item].error != null) {\n            errors.push(new Error('battle resourses not loaded...'));\n          }\n\n          ;\n        });\n\n        if (errors.length > 0) {\n          reject(errors);\n        }\n\n        if (errors.length === 0) {\n          resolve('battle resourses loaded...100%');\n        }\n      });\n    });\n  }\n\n  render() {}\n\n  update(state) {\n    console.log('observer', state);\n    this.render();\n  }\n\n  set status(value) {\n    this._battle = value;\n  }\n\n}\n\n//# sourceURL=webpack:///./src/components/preload/index.js?");
+
+/***/ }),
+
 /***/ "./src/observer/index.js":
 /*!*******************************!*\
   !*** ./src/observer/index.js ***!
@@ -899,19 +935,7 @@ eval("var api = __webpack_require__(/*! ../../../node_modules/style-loader/dist/
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return listener; });\n/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ \"./src/store/index.js\");\n\nconst store = new _store__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\nstore.subscribe(store.login);\nstore.subscribe(store.loading);\nstore.subscribe(store.battle);\nfunction listener() {\n  document.addEventListener(\"click\", event => {\n    if (event.target.id === \"start\") {\n      store.login.status = false;\n      store.loading.loadingStatus = true;\n      store.notify();\n      store.battle.preload().then(data => {\n        console.log(\"battle resourses loaded...100%\");\n        setTimeout(() => {\n          store.loading.loadingStatus = false;\n          store.battle.status = true;\n          store.notify();\n        }, 2000);\n      }).catch(data => {\n        throw data;\n      });\n    }\n  });\n  store.login.render();\n}\n\n//# sourceURL=webpack:///./src/observer/index.js?");
-
-/***/ }),
-
-/***/ "./src/screens/battle/index.js":
-/*!*************************************!*\
-  !*** ./src/screens/battle/index.js ***!
-  \*************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Battle; });\n/* harmony import */ var pixi_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! pixi.js */ \"./node_modules/pixi.js/lib/pixi.es.js\");\n\nclass Battle {\n  constructor() {\n    this._battle = false;\n    this.canvas = new pixi_js__WEBPACK_IMPORTED_MODULE_0__[\"Application\"]({\n      resizeTo: window,\n      backgroundColor: 0x44d8f5\n    });\n    this.sprites = {};\n  }\n\n  preload() {\n    this.canvas.loader.add('characters_0001', '../assets/characters/characters_0001.png', {\n      crossOrigin: ''\n    });\n    this.canvas.loader.add('characters_0002', '../assets/characters/characters_0002.png', {\n      crossOrigin: ''\n    });\n    this.canvas.loader.add('characters_0003', '../assets/characters/characters_0003.png', {\n      crossOrigin: ''\n    });\n    this.canvas.loader.add('characters_0004', '../assets/characters/characters_0004.png', {\n      crossOrigin: ''\n    });\n    this.canvas.loader.add('characters_0005', '../assets/characters/characters_0005.png', {\n      crossOrigin: ''\n    });\n    this.canvas.loader.add('characters_0006', '../assets/characters/characters_0006.png', {\n      crossOrigin: ''\n    });\n    this.canvas.loader.add('characters_0007', '../assets/characters/characters_0007.png', {\n      crossOrigin: ''\n    });\n    return new Promise((resolve, reject) => {\n      let errors = [];\n      this.canvas.loader.load((loader, resources) => {\n        Object.keys(resources).map((item, i) => {\n          if (resources[item].error != null) {\n            errors.push(new Error('battle resourses not loaded...'));\n          }\n\n          ;\n        });\n\n        if (errors.length > 0) {\n          reject(errors);\n        }\n\n        if (errors.length === 0) {\n          resolve();\n        }\n      });\n    });\n  }\n\n  render() {\n    if (this._battle) {\n      document.querySelector(\"#app\").appendChild(this.canvas.view);\n    } else {}\n  }\n\n  update(state) {\n    console.log('observer', state);\n    this.render();\n  }\n\n  set status(value) {\n    this._battle = value;\n  }\n\n}\n\n//# sourceURL=webpack:///./src/screens/battle/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return listener; });\n/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../store */ \"./src/store/index.js\");\n\nconst store = new _store__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\nstore.subscribe(store.login);\nstore.subscribe(store.loading);\nstore.subscribe(store.preload);\nstore.subscribe(store.battle);\nfunction listener() {\n  document.addEventListener(\"click\", event => {\n    if (event.target.id === \"start\") {\n      store.login.status = false;\n      store.loading.loadingStatus = true;\n      store.notify();\n      store.preload.preload().then(data => {\n        console.log(data);\n        setTimeout(() => {\n          store.loading.loadingStatus = false;\n          store.battle.status = true;\n          store.notify();\n        }, 1000);\n      }).catch(data => {\n        throw data;\n      });\n    }\n  });\n  store.login.render();\n}\n\n//# sourceURL=webpack:///./src/observer/index.js?");
 
 /***/ }),
 
@@ -935,7 +959,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) *
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Store; });\n/* harmony import */ var _components_loading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/loading */ \"./src/components/loading/index.js\");\n/* harmony import */ var _screens_login__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../screens/login */ \"./src/screens/login/index.js\");\n/* harmony import */ var _screens_battle__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../screens/battle */ \"./src/screens/battle/index.js\");\n\n\n\nclass Store {\n  constructor() {\n    this.subscribes = [];\n    this.loading = new _components_loading__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\n    this.login = new _screens_login__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\n    this.battle = new _screens_battle__WEBPACK_IMPORTED_MODULE_2__[\"default\"]();\n  }\n\n  notify() {\n    this.notifyAll();\n  }\n\n  notifyAll() {\n    return this.subscribes.forEach(subs => subs.update(this));\n  }\n\n  subscribe(observer) {\n    this.subscribes.push(observer);\n  }\n\n  unSubscribe(observer) {\n    this.subscribe = this.subscribe.filter(subs => subs !== observer);\n  }\n\n}\n\n//# sourceURL=webpack:///./src/store/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"default\", function() { return Store; });\n/* harmony import */ var _components_loading__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/loading */ \"./src/components/loading/index.js\");\n/* harmony import */ var _components_battle__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/battle */ \"./src/components/battle/index.js\");\n/* harmony import */ var _screens_login__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../screens/login */ \"./src/screens/login/index.js\");\n/* harmony import */ var _components_preload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/preload */ \"./src/components/preload/index.js\");\n\n\n\n\nclass Store {\n  constructor() {\n    this.subscribes = [];\n    this.loading = new _components_loading__WEBPACK_IMPORTED_MODULE_0__[\"default\"]();\n    this.login = new _screens_login__WEBPACK_IMPORTED_MODULE_2__[\"default\"]();\n    this.preload = new _components_preload__WEBPACK_IMPORTED_MODULE_3__[\"default\"]();\n    this.battle = new _components_battle__WEBPACK_IMPORTED_MODULE_1__[\"default\"]();\n  }\n\n  notify() {\n    this.notifyAll();\n  }\n\n  notifyAll() {\n    return this.subscribes.forEach(subs => subs.update(this));\n  }\n\n  subscribe(observer) {\n    this.subscribes.push(observer);\n  }\n\n  unSubscribe(observer) {\n    this.subscribe = this.subscribe.filter(subs => subs !== observer);\n  }\n\n}\n\n//# sourceURL=webpack:///./src/store/index.js?");
 
 /***/ })
 
