@@ -1,7 +1,8 @@
 import Loading from "../components/loading";
-import Battle from "../components/battle";
 import Login from "../screens/login";
 import Preload from "../components/preload";
+import BattleContainer from "../components/battleContainer";
+import Row from "../components/row";
 
 export default class Store {
     constructor() {
@@ -9,7 +10,8 @@ export default class Store {
         this.loading = new Loading();
         this.login = new Login();
         this.preload = new Preload();
-        this.battle = new Battle();
+        this.battleContainer = new BattleContainer();
+        this.row = new Row;
     }
 
 
