@@ -19,8 +19,6 @@ export default class Preload {
             let errors = [];
             App.loader.load((loader, resources) => {
                 Object.keys(resources).map((item, i) => {
-
-                    this.sprites[resources[item].name] = new PIXI.TilingSprite(resources[item].texture, 256, 256);
                     
                     if (resources[item].error != null) {
                         errors.push(new Error('battle resourses not loaded...'));

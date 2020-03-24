@@ -3,7 +3,8 @@ const store = new Store();
 store.subscribe(store.login);
 store.subscribe(store.loading);
 store.subscribe(store.preload);
-store.subscribe(store.battle);
+store.subscribe(store.battleContainer);
+store.subscribe(store.row);
 
 export default function listener() {
 
@@ -16,7 +17,8 @@ export default function listener() {
                 console.log(data);
                 setTimeout(() => {
                     store.loading.loadingStatus = false;
-                    store.battle.status = true;
+                    store.battleContainer.status = true;
+                    store.row.generation = true;
                     store.notify();
                 }, 1000);
             }).catch(data => {
