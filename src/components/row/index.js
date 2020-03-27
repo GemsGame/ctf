@@ -39,7 +39,7 @@ export default class Row {
         }
 
 
-        this.findClusters();
+        console.log(this.findClusters());
 
 
     }
@@ -63,7 +63,8 @@ export default class Row {
             [],
             []
         ];
-
+        
+        let clusterArr = [];
         let count = 0;
         for (let i = 0; i < this.battleContainer.children.length; i++) {
             if (i === 5 || i === 10 || i === 15 || i === 20) {
@@ -78,6 +79,8 @@ export default class Row {
                 if (r === arr.length - 1) {
                     if (clusters >= 3) {
                         console.log('push cluster', clusters);
+                        clusterArr.push({column: c, row:r + 1 - clusters,
+                            length: clusters, horizontal: true });
                     }
                     clusters = 1;
 
@@ -88,6 +91,8 @@ export default class Row {
                         // Different type
                         if (clusters >= 3) {
                             console.log('push cluster', clusters);
+                            clusterArr.push({column: c, row:r + 1 - clusters,
+                                length: clusters, horizontal: true });
                         }
                         clusters = 1;
                     }
@@ -101,6 +106,8 @@ export default class Row {
                 if (r === arr.length - 1) {
                     if (clusters >= 3) {
                         console.log('push cluster', clusters);
+                        clusterArr.push({column: c, row:r + 1 - clusters,
+                            length: clusters, horizontal: false });
                     }
                     clusters = 1;
 
@@ -111,12 +118,16 @@ export default class Row {
                         // Different type
                         if (clusters >= 3) {
                             console.log('push cluster', clusters);
+                            clusterArr.push({column: c, row:r + 1 - clusters,
+                                length: clusters, horizontal: false });
                         }
                         clusters = 1;
                     }
                 }
             }
         }
+
+        return clusterArr;
     }
 
 
