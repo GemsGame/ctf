@@ -5,15 +5,26 @@ export default class Row {
     constructor() {
         this.generation = false;
         this.battleContainer = {};
+        this.arr = [
+            [],
+            [],
+            [],
+            [],
+            []
+        ];
+
     }
 
     render() {
         if (this.generation === true) {
-            this.generateRows(5, 5);
+   
+          this.startGame();
         }
     }
 
     generateRows(columns, rows) {
+       
+
         for (let i = 0; i < columns * rows; i++) {
             let tile = this.generateRandomTile('characters');
             tile = new PIXI.TilingSprite(tile.texture, 256, 256);
@@ -22,6 +33,7 @@ export default class Row {
             tile.x = (i % rows) * 100;
             tile.y = Math.floor(i / columns) * 100;
             this.battleContainer.addChild(tile);
+          
         }
 
 
@@ -38,12 +50,26 @@ export default class Row {
             this.battleContainer.pivot.y = this.battleContainer.height / 2;
         }
 
-
-        console.log(this.findClusters());
-
-
     }
+    
 
+    startGame () {
+        this.generateRows(5, 5);
+        this.genArr();
+        this.findMoves();
+
+        while(this.findClusters().length > 0) {
+            this.battleContainer.removeChildren();
+            this.generateRows(5, 5);
+            this.genArr();
+            this.findMoves();
+        
+        };
+
+
+        
+       
+    }
     generateRandomTile(textureName) {
         let random = [];
         Object.keys(App.loader.resources).map((item, i) => {
@@ -54,43 +80,46 @@ export default class Row {
         return random[Math.round(Math.random() * (random.length - 1))];
     }
 
-    findClusters() {
-        //horisontal cluster 
-        let arr = [
+
+    genArr () {
+        this.arr = [
             [],
             [],
             [],
             [],
             []
         ];
-        
-        let clusterArr = [];
+
         let count = 0;
         for (let i = 0; i < this.battleContainer.children.length; i++) {
             if (i === 5 || i === 10 || i === 15 || i === 20) {
                 count += 1;
             }
-            arr[count].push(this.battleContainer.children[i]);
+            this.arr[count].push(this.battleContainer.children[i]);
         }
-
-        for (var c = 0; c < arr.length; c++) {
+    }
+    findClusters() {
+        //horisontal cluster 
+  
+        let clusterArr = [];
+        for (var c = 0; c < this.arr.length; c++) {
             let clusters = 1;
-            for (var r = 0; r < arr.length; r++) {
-                if (r === arr.length - 1) {
+            for (var r = 0; r < this.arr.length; r++) {
+                if (r === this.arr.length - 1) {
                     if (clusters >= 3) {
-                        console.log('push cluster', clusters);
+                        //console.log('push cluster', clusters);
                         clusterArr.push({column: c, row:r + 1 - clusters,
                             length: clusters, horizontal: true });
                     }
                     clusters = 1;
 
                 } else {
-                    if (arr[c][r].texture.textureCacheIds[0] === arr[c][r + 1].texture.textureCacheIds[0]) {
+                    if (this.arr[c][r].texture.textureCacheIds[0] === this.arr[c][r + 1].texture.textureCacheIds[0]) {
                         clusters += 1;
                     } else {
                         // Different type
                         if (clusters >= 3) {
-                            console.log('push cluster', clusters);
+                            //console.log('push cluster', clusters);
                             clusterArr.push({column: c, row:r + 1 - clusters,
                                 length: clusters, horizontal: true });
                         }
@@ -100,24 +129,24 @@ export default class Row {
             }
         }
         //find vartical clusters
-        for (var c = 0; c < arr.length; c++) {
+        for (var c = 0; c < this.arr.length; c++) {
             let clusters = 1;
-            for (var r = 0; r < arr.length; r++) {
-                if (r === arr.length - 1) {
+            for (var r = 0; r < this.arr.length; r++) {
+                if (r === this.arr.length - 1) {
                     if (clusters >= 3) {
-                        console.log('push cluster', clusters);
+                        //console.log('push cluster', clusters);
                         clusterArr.push({column: c, row:r + 1 - clusters,
                             length: clusters, horizontal: false });
                     }
                     clusters = 1;
 
                 } else {
-                    if (arr[r][c].texture.textureCacheIds[0] === arr[r + 1][c].texture.textureCacheIds[0]) {
+                    if (this.arr[r][c].texture.textureCacheIds[0] === this.arr[r + 1][c].texture.textureCacheIds[0]) {
                         clusters += 1;
                     } else {
                         // Different type
                         if (clusters >= 3) {
-                            console.log('push cluster', clusters);
+                            //console.log('push cluster', clusters);
                             clusterArr.push({column: c, row:r + 1 - clusters,
                                 length: clusters, horizontal: false });
                         }
@@ -126,14 +155,56 @@ export default class Row {
                 }
             }
         }
-
+  
         return clusterArr;
     }
+    
+    findMoves () {
+        let moves = [];
+          // Check vertical swaps
+        for (var c = 0; c < this.arr.length; c++) {
+            for (var r = 0; r < this.arr.length - 1; r++) {
 
+            
+                this.swap(c,r, c, r + 1);
+                let s = this.findClusters();
+                this.swap(c,r, c, r + 1);
 
+                if (s.length > 0) {
+                    moves.push({column1: c, row1: r, column2: c, row2: r+1});
+                    
+                }
 
+            }
+        }
+           // Check horizontal swaps
+           for (var r = 0; r < this.arr.length; r++) {
+            for (var c = 0; c < this.arr.length - 1; c++) {
+
+                this.swap(c,r, c + 1, r);
+                let s = this.findClusters();
+                this.swap(c,r, c + 1, r);
+
+                if (s.length > 0) {
+                    moves.push({column1: c, row1: r, column2: c + 1, row2: r});
+                   
+                }
+            }
+        } 
+       
+        return moves;
+    }
+    
+  
+    swap(x1, y1, x2, y2) {
+        var typeswap = this.arr[x1][y1].texture.textureCacheIds[0];
+        this.arr[x1][y1].texture.textureCacheIds[0] = this.arr[x2][y2].texture.textureCacheIds[0];
+        this.arr[x2][y2].texture.textureCacheIds[0] = typeswap;
+    }
+
+    
     update(store) {
-        this.battleContainer = store.battleContainer.battleContainer;
+        this.battleContainer = store.battleContainer.battleContainer; 
         this.render();
     }
 }
